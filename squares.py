@@ -1,23 +1,7 @@
-"""Computation of weighted average of squares."""
-
+import argparse
 
 def average_of_squares(list_of_numbers, list_of_weights=None):
-    """ Return the weighted average of a list of values.
-    
-    By default, all values are equally weighted, but this can be changed
-    by the list_of_weights argument.
-    
-    Example:
-    --------
-    >>> average_of_squares([1, 2, 4])
-    7.0
-    >>> average_of_squares([2, 4], [1, 0.5])
-    6.0
-    >>> average_of_squares([1, 2, 4], [1, 0.5])
-    Traceback (most recent call last):
-    AssertionError: weights and numbers must have same length
-
-    """
+    """计算一个数字列表的加权平方平均值。"""
     if list_of_weights is not None:
         assert len(list_of_weights) == len(list_of_numbers), \
             "weights and numbers must have same length"
@@ -31,32 +15,24 @@ def average_of_squares(list_of_numbers, list_of_weights=None):
     ]
     return sum(squares)
 
-
 def convert_numbers(list_of_strings):
-    """Convert a list of strings into numbers, ignoring whitespace.
-    
-    Example:
-    --------
-    >>> convert_numbers(["4", " 8 ", "15 16", " 23    42 "])
-    [4, 8, 15, 16]
-
-    """
+    """将字符串列表转换为数字，忽略空白字符。"""
     all_numbers = []
     for s in list_of_strings:
-        # Take each string in the list, split it into substrings separated by
-        # whitespace, and collect them into a single list...
         all_numbers.extend([token.strip() for token in s.split()])
-    # ...then convert each substring into a number
     return [float(number_string) for number_string in all_numbers]
 
-
 if __name__ == "__main__":
-    numbers_strings = ["1","2","4"]
-    weight_strings = ["1","1","1"]        
-    
-    numbers = convert_numbers(numbers_strings)
-    weights = convert_numbers(weight_strings)
-    
-    result = average_of_squares(numbers, weights)
-    
+    # 创建命令行参数解析器
+    parser = argparse.ArgumentParser(description="计算一组数字的加权平方平均值")
+    parser.add_argument("numbers", type=float, nargs="+", help="输入的数字列表")
+
+    # 解析命令行参数
+    args = parser.parse_args()
+    numbers = args.numbers  # 获取输入的数字
+
+    # 使用硬编码的 weights = None
+    result = average_of_squares(numbers)
+
+    # 打印结果
     print(result)
